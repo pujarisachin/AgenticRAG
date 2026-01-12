@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     log_level:str
     openai_api_key:str
     vector_store_type:str
+    default_chunk_size:int
+    default_chunk_overlap : int
 
 @lru_cache
 def get_settings():

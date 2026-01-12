@@ -35,4 +35,4 @@ def clean_documents(Documents:List[Document]):
 
         cleaned_final_docs.append(cleaned_doc)
 
-        return cleaned_final_docs
+    return cleaned_final_docs

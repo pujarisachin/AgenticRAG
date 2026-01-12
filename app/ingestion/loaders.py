@@ -2,7 +2,10 @@ from pathlib import Path
 from typing import List
 from langchain_core.documents import Document
 from langchain_community.document_loaders import (PyPDFLoader,Docx2txtLoader,TextLoader)
-from app.core.logging import get_logger
+from app.core.logging import get_logger,setup_logging
+from app.core.config import get_settings
+settings = get_settings()
+setup_logging(settings.log_level)
 
 logger = get_logger(__name__)
 
@@ -29,6 +32,7 @@ def Load_single_file(filepath:Path):
 def load_multiple_documents(directoryPath:Path):
     directoryPath = Path(directoryPath)
 
+    logger.info(f"file path is {directoryPath}")
     if not directoryPath.exists():
         raise FileNotFoundError("Path does not exist: {directoryPath}")
     
@@ -49,7 +53,10 @@ def load_multiple_documents(directoryPath:Path):
         logger.info("no supported files in directory")
     
     for file in files:
+        #logger.info(f"file name is {file.name}")
         doc = Load_single_file(file)
+       # logger.info(f"*********************************************singel doc after loading{doc}")
         all_documents.extend(doc)
+       # logger.info(f"+++++++++++++++++++++++++++++++++++++++++++++++++final doc after loading {all_documents}")
 
     return all_documents

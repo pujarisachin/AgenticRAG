@@ -5,6 +5,7 @@ from app.ingestion.chunking import chunk_document
 from app.ingestion.metadata import enrich_metadata
 from app.vectorstore.embeddings import get_embedding_model
 from app.vectorstore.store import build_vector_store
+from app.retriever.retriever import Retriever
 
 docs = load_multiple_documents("app/Data/raw")
 model = get_embedding_model()
@@ -17,7 +18,26 @@ enriched_chunks = enrich_metadata(chunks)
 
 store = build_vector_store(enriched_chunks)
 
-result = store.similarity_search("what is in this doc",k=5)
+retriever = Retriever(store)
+
+
+print("===**********************************************************************Similarity Search ===")
+results = retriever.similarity_search(
+    "What is this document about?", k=3
+)
+
+for r in results:
+    print(r.metadata["chunk_id"])
+
+print("\n=== ###############################################################3333MMR Search ===")
+results = retriever.mmr_search(
+    "What is this document about?", k=3
+)
+
+for r in results:
+    print(r.metadata["chunk_id"])
+
+#result = store.similarity_search("Inventive",k=5)
 
 # texts = [doc.page_content for doc in enriched_chunks]
 # vec = model.embed_documents(texts)
@@ -29,10 +49,10 @@ result = store.similarity_search("what is in this doc",k=5)
 # for v in vec:
 #     print(v)
 
-for r in result:
-    print("*************************************")
-    print(r.page_content)
-    print("########")
-    print(r.metadata)
+# for r in result:
+#     print("*************************************")
+#     print(r.page_content)
+#     print("########")
+#     print(r.metadata)
     
 

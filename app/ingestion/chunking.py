@@ -9,9 +9,9 @@ logger = get_logger(__name__)
 
 def chunk_document(documents:List[Document]):
     """Split documents into Semantically meaningfull documents"""
-    serttings = get_settings()
-    chunk_size = getattr(serttings,"default_chunk_size",800)
-    chunk_overlap = getattr(serttings,"default_chunk_overlap",150)
+    settings = get_settings()
+    chunk_size = getattr(settings,"default_chunk_size",800)
+    chunk_overlap = getattr(settings,"default_chunk_overlap",150)
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size = chunk_size,
